@@ -15,6 +15,9 @@ import java.io.File;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
+/**
+ * The Class FitxategiOperazioak.
+ */
 public class FitxategiOperazioak {
 	/** Kodea. */
 	static String[] Kodea = { "31", "376", "90", "261", "685", "213", "291", "595", "30", "964" };
@@ -42,6 +45,11 @@ public class FitxategiOperazioak {
 	/** Gure dataren Formatua. */
 	private static final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
+	/**
+	 * Fitxategia bete.
+	 *
+	 * @param fitxategia , gure xml fitxategia
+	 */
 	public static void fitxategiaBete(File fitxategia) {
 		try {
 
@@ -95,6 +103,11 @@ public class FitxategiOperazioak {
 		}
 	}
 
+	/**
+	 * Irakurri eta erakutsi XML.
+	 *
+	 * @param fitxategia gure xml fitxategia
+	 */
 	public static void irakurriEtaErakutsiXML(File fitxategia) {
 		try {
 
@@ -136,6 +149,12 @@ public class FitxategiOperazioak {
 
 	}
 
+	/**
+	 * Bilatu kodearen arabera.
+	 *
+	 * @param fitxategia  gure xml fitxategia
+	 * @param kodeaBilatu , bilatu nahi dugun hiriaren kodea
+	 */
 	public static void bilatuKodearenArabera(File fitxategia, String kodeaBilatu) {
 		try {
 
@@ -184,6 +203,12 @@ public class FitxategiOperazioak {
 		}
 	}
 
+	/**
+	 * Bilatu hitzarekin.
+	 *
+	 * @param fitxategia  gure xml fitxategia
+	 * @param hitzaBilatu , bilatu nahi dugun hiriaren hitz gakoren bat
+	 */
 	public static void bilatuHitzarekin(File fitxategia, String hitzaBilatu) {
 		try {
 
@@ -225,6 +250,11 @@ public class FitxategiOperazioak {
 		}
 	}
 
+	/**
+	 * Inprimatu erregistroa.
+	 *
+	 * @param paisElement Zein Hiri
+	 */
 	private static void inprimatuErregistroa(Element paisElement) {
 		System.out.println("Kodea: " + paisElement.getElementsByTagName("Kodea").item(0).getTextContent());
 		System.out.println("Estatua: " + paisElement.getElementsByTagName("Estatua").item(0).getTextContent());
@@ -235,6 +265,12 @@ public class FitxategiOperazioak {
 		System.out.println("Kapitala: " + paisElement.getElementsByTagName("Kapitala").item(0).getTextContent());
 	}
 
+	/**
+	 * Ezabatu kodearekin.
+	 *
+	 * @param fitxategia   , gure fitxategia
+	 * @param kodeaEzabatu Ezabatzeko nahi dugun Hiriaren Kodea
+	 */
 	public static void ezabatuKodearekin(File fitxategia, String kodeaEzabatu) {
 		try {
 

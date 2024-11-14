@@ -6,8 +6,17 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
 
+/**
+ * The Class DirektorioaUtils.
+ */
 public class DirektorioaUtils {
 
+	/**
+	 * Eskatu direktorioa.
+	 *
+	 * @param sc , gure eskanerra
+	 * @return gure direktorioaren helbide osoa
+	 */
 	public static String EskatuDirektorioa(Scanner sc) {
 		String helbideOsoaString;
 		File dirFile;

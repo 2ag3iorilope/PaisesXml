@@ -3,8 +3,17 @@ package PaisesXML;
 import java.io.File;
 import java.util.Scanner;
 
+
+/**
+ * The Class Main.
+ */
 public class Main {
 
+	/**
+	 * The main method.
+	 *
+	 * @param args the arguments
+	 */
 	public static void main(String[] args) {
 
 		Scanner sc = new Scanner(System.in);
