@@ -50,7 +50,7 @@ public class DirektorioaUtils {
 					System.out.println("Fitxategia sortu da: " + fitxatefiosoaFile.getAbsolutePath());
 
 					try (BufferedWriter writer = new BufferedWriter(new FileWriter(fitxatefiosoaFile))) {
-					
+
 						System.out.println("Testua idatzi da fitxategian.");
 					} catch (IOException e) {
 						System.out.println("Errorea fitxategian testua idaztean: " + e.getMessage());

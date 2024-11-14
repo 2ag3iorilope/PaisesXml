@@ -97,26 +97,22 @@ public class FitxategiOperazioak {
 
 	public static void irakurriEtaErakutsiXML(File fitxategia) {
 		try {
-			
+
 			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
 			Document doc = dBuilder.parse(fitxategia);
 			doc.getDocumentElement().normalize();
 
-		
 			System.out.println("Erroa: " + doc.getDocumentElement().getNodeName());
 
-			
 			NodeList paises = doc.getElementsByTagName("Pais");
 
-			
 			for (int i = 0; i < paises.getLength(); i++) {
 				Node paisNode = paises.item(i);
 
 				if (paisNode.getNodeType() == Node.ELEMENT_NODE) {
 					Element paisElement = (Element) paisNode;
 
-			
 					String kodea = paisElement.getElementsByTagName("Kodea").item(0).getTextContent();
 					String estatua = paisElement.getElementsByTagName("Estatua").item(0).getTextContent();
 					String biziEsperantza = paisElement.getElementsByTagName("BiziEsperantza").item(0).getTextContent();
@@ -179,12 +175,106 @@ public class FitxategiOperazioak {
 					}
 				}
 			}
-			
+
 			if (!aurkituta) {
 				System.out.println("Ez da aurkitu kodearekin lotutako herrialderik: " + kodeaBilatu);
 			}
 		} catch (Exception e) {
 			System.out.println("Errorea XML fitxategia irakurtzean: " + e.getMessage());
+		}
+	}
+
+	public static void bilatuHitzarekin(File fitxategia, String hitzaBilatu) {
+		try {
+
+			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+			Document doc = dBuilder.parse(fitxategia);
+			doc.getDocumentElement().normalize();
+
+			NodeList paisList = doc.getElementsByTagName("Pais");
+			int matchCount = 0;
+
+			System.out.println("Bilaketa hitzarekin \"" + hitzaBilatu + "\":");
+
+			for (int i = 0; i < paisList.getLength(); i++) {
+				Node paisNode = paisList.item(i);
+
+				if (paisNode.getNodeType() == Node.ELEMENT_NODE) {
+					Element paisElement = (Element) paisNode;
+
+					StringBuilder paisData = new StringBuilder();
+					paisData.append(paisElement.getElementsByTagName("Kodea").item(0).getTextContent()).append(" ");
+					paisData.append(paisElement.getElementsByTagName("Estatua").item(0).getTextContent()).append(" ");
+					paisData.append(paisElement.getElementsByTagName("Kapitala").item(0).getTextContent()).append(" ");
+
+					if (paisData.toString().toLowerCase().contains(hitzaBilatu.toLowerCase())) {
+						matchCount++;
+						System.out.println("\n[" + matchCount + "] Erregistroa aurkituta:");
+						inprimatuErregistroa(paisElement);
+					}
+				}
+			}
+
+			if (matchCount == 0) {
+				System.out.println("Ez da aurkitu erregistro bat ere hitzarekin \"" + hitzaBilatu + "\".");
+			}
+
+		} catch (Exception e) {
+			System.out.println("Errorea bilaketa egitean: " + e.getMessage());
+		}
+	}
+
+	private static void inprimatuErregistroa(Element paisElement) {
+		System.out.println("Kodea: " + paisElement.getElementsByTagName("Kodea").item(0).getTextContent());
+		System.out.println("Estatua: " + paisElement.getElementsByTagName("Estatua").item(0).getTextContent());
+		System.out.println(
+				"Bizi Esperantza: " + paisElement.getElementsByTagName("BiziEsperantza").item(0).getTextContent());
+		System.out.println("Data Sortu: " + paisElement.getElementsByTagName("DataSortu").item(0).getTextContent());
+		System.out.println("Poblazioa: " + paisElement.getElementsByTagName("Poblazioa").item(0).getTextContent());
+		System.out.println("Kapitala: " + paisElement.getElementsByTagName("Kapitala").item(0).getTextContent());
+	}
+
+	public static void ezabatuKodearekin(File fitxategia, String kodeaEzabatu) {
+		try {
+
+			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+			Document doc = dBuilder.parse(fitxategia);
+			doc.getDocumentElement().normalize();
+
+			NodeList paisList = doc.getElementsByTagName("Pais");
+			boolean nodoEliminado = false;
+
+			for (int i = 0; i < paisList.getLength(); i++) {
+				Node paisNode = paisList.item(i);
+
+				if (paisNode.getNodeType() == Node.ELEMENT_NODE) {
+					Element paisElement = (Element) paisNode;
+
+					String kodea = paisElement.getElementsByTagName("Kodea").item(0).getTextContent();
+					if (kodea.equals(kodeaEzabatu)) {
+						paisNode.getParentNode().removeChild(paisNode);
+						nodoEliminado = true;
+						System.out.println("Erregistroa kodearekin \"" + kodeaEzabatu + "\" ezabatu da.");
+						break;
+					}
+				}
+			}
+
+			if (!nodoEliminado) {
+				System.out.println("Ez da aurkitu kodearekin \"" + kodeaEzabatu + "\" duen erregistroa.");
+			} else {
+
+				TransformerFactory transformerFactory = TransformerFactory.newInstance();
+				Transformer transformer = transformerFactory.newTransformer();
+				DOMSource source = new DOMSource(doc);
+				StreamResult result = new StreamResult(fitxategia);
+				transformer.transform(source, result);
+			}
+
+		} catch (Exception e) {
+			System.out.println("Errorea nodoa ezabatzean: " + e.getMessage());
 		}
 	}
 
