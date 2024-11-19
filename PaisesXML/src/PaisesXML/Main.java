@@ -1,6 +1,7 @@
 package PaisesXML;
 
 import java.io.File;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 /**
@@ -24,7 +25,7 @@ public class Main {
 
 		File fitxategia = DirektorioaUtils.KonprobatuEdoSortuFitxategia(helbideOsoaString, fitxategiIzenaString);
 
-		int option;
+		int option = 0;
 
 		do {
 			System.out.println("\n=============================");
@@ -39,45 +40,47 @@ public class Main {
 			System.out.println("=============================");
 			System.out.print("Aukeratu aukera (1-6): ");
 
-			option = sc.nextInt();
-			sc.nextLine();
+			try {
+				option = sc.nextInt();
+				sc.nextLine();
+				if (option < 1 || option > 6) {
+					System.out.println("Aukera ezegokia. Saiatu berriro.");
+				} else {
+					switch (option) {
+					case 1:
+						FitxategiOperazioak.fitxategiaBete(fitxategia);
+						break;
+					case 2:
+						FitxategiOperazioak.irakurriEtaErakutsiXML(fitxategia);
+						break;
+					case 3:
+						System.out.print("Sartu bilatu nahi duzun herrialdearen kodea: ");
+						String kodeaBilatu = sc.nextLine();
+						FitxategiOperazioak.bilatuKodearenArabera(fitxategia, kodeaBilatu);
+						break;
+					case 4:
+						System.out.print("Sartu bilatu nahi duzun hitza: ");
+						String hitzaBilatu = sc.nextLine();
+						FitxategiOperazioak.bilatuHitzarekin(fitxategia, hitzaBilatu);
+						break;
+					case 5:
+						System.out.print("Sartu ezabatu nahi duzun kodea: ");
+						String kodeaEzabatu = sc.nextLine();
+						FitxategiOperazioak.ezabatuKodearekin(fitxategia, kodeaEzabatu);
+						break;
+					case 6:
+						System.out.println("Irteten...");
+						break;
+					}
+				}
+			} catch (InputMismatchException e) {
 
-			switch (option) {
-			case 1:
-
-				FitxategiOperazioak.fitxategiaBete(fitxategia);
-				break;
-			case 2:
-				FitxategiOperazioak.irakurriEtaErakutsiXML(fitxategia);
-				break;
-			case 3:
-				System.out.print("Sartu bilatu nahi duzun herrialdearen kodea: ");
-				String kodeaBilatu = sc.nextLine();
-
-				FitxategiOperazioak.bilatuKodearenArabera(fitxategia, kodeaBilatu);
-
-				break;
-			case 4:
-				System.out.print("Sartu bilatu nahi duzun hitza: ");
-				String hitzaBilatu = sc.nextLine();
-				FitxategiOperazioak.bilatuHitzarekin(fitxategia, hitzaBilatu);
-				break;
-			case 5:
-				System.out.print("Sartu ezabatu nahi duzun kodea: ");
-				String kodeaEzabatu = sc.nextLine();
-
-				FitxategiOperazioak.ezabatuKodearekin(fitxategia, kodeaEzabatu);
-				break;
-
-			case 6:
-				System.out.println("Irteten...");
-				break;
-
-			default:
 				System.out.println("Aukera ezegokia. Saiatu berriro.");
+				sc.nextLine();
 			}
+
 		} while (option != 6);
+
 		sc.close();
 	}
-
 }
